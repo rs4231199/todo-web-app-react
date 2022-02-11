@@ -1,38 +1,75 @@
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
+  background-color: var(--nord7);
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: space-evenly;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: var(--nord0);
 }
 
-.App-link {
-  color: #61dafb;
+::selection {
+  color: var(--nord4);
+  background: var(--nord9);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.left, .right {
+  border-radius: 5px;
+  padding: 5px;
+  margin: 20px 5px;
+  align-items: center;
+  min-width: 30vw;
+  text-overflow: wrap;
+}
+
+input {
+  background-color: var(--nord7);
+  font-size: calc(10px + 2vmin);
+  color: var(--nord0);
+  border: none;
+  border-bottom: var(--nord0) solid 3px;
+  /* border-radius: 4px; */
+}
+
+input:focus {
+  /* border: var(--nord3) solid 3px; */
+  outline: none;
+}
+
+.task-completed {
+  text-decoration: line-through;
+  color: var(--nord11);
+}
+
+button {
+  background-color: var(--nord10);
+  color: var(--nord4);
+  border: solid var(--nord0) 2px;
+}
+
+button:hover {
+  outline: solid var(--nord0) 2px;
+}
+
+ul {
+  list-style-type: square;
+}
+
+.error {
+  color: var(--nord10);
+  background-color: var(--nord13);
+  font-size: calc(8px + 1.5vmin);
+}
+
+.removed {
+  color: var(--nord1);
+  font-size: calc(8px + 1.5vmin);
+}
+
+.add-task {
+  border: none;
+  background-color: var(--nord7);
+  color: var(--nord0);
+  font-size: calc(8px + 1.5vmin);
+  margin-left: 5px;
 }
