@@ -4,7 +4,7 @@ export default function List({ tasks, toggleTaskStatus }) {
 			<li
 				key={index}
 				className={
-					task.active ? '' : 'task-completed'
+					task.active ? 'task' : 'task task-completed'
 				}
 				onClick={
 					() => toggleTaskStatus(index)

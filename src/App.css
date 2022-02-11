@@ -36,6 +36,10 @@ input:focus {
   outline: none;
 }
 
+.task {
+  cursor: pointer;
+}
+
 .task-completed {
   text-decoration: line-through;
   color: var(--nord11);
@@ -45,6 +49,7 @@ button {
   background-color: var(--nord10);
   color: var(--nord4);
   border: solid var(--nord0) 2px;
+  cursor: pointer;
 }
 
 button:hover {
