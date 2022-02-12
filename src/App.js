@@ -17,7 +17,6 @@ let uid
 function App() {
   const [data, setData] = useState(loremTasks)
   const [loading, setLoading] = useState(true)
-  const [msg, setMsg] = useState("Loading your tasks...")
 
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
@@ -30,10 +29,8 @@ function App() {
         } else {
           setDoc(doc(db, 'todos', uid), loremTasks)
         }
-        setLoading(false)
-      } else {
-        setMsg("Server connection failed.")
       }
+      setLoading(false)
     })
   }, [])
 
@@ -84,14 +81,14 @@ function App() {
 
   return (
     <div>
-      {loading && msg}
+      {loading && 'Loading your tasks...'}
       {!loading &&
-        <div className="App">
-          <div className="left">
+        <div className='App'>
+          <div className='left'>
             <TaskInput addTask={actions.addTask} />
             <List tasks={data.tasks} toggleTaskStatus={actions.toggleTaskStatus} />
           </div>
-          <div className="right">
+          <div className='right'>
             <button onClick={actions.removeAllCompletedTasks}>Remove Completed Tasks</button>
             <button onClick={actions.resetData}>Reset User Data</button>
             <Removed removed={data.removed} />
