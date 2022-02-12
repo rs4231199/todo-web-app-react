@@ -50,6 +50,7 @@ button {
   color: var(--nord4);
   border: solid var(--nord0) 2px;
   cursor: pointer;
+  margin: 5px;
 }
 
 button:hover {

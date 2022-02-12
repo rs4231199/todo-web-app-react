@@ -1,33 +1,42 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { onAuthStateChanged } from 'firebase/auth'
+import { doc, getDoc, setDoc } from 'firebase/firestore'
 
 import List from './components/List'
 import Removed from './components/Removed'
 import TaskInput from './components/TaskInput'
 
+import { auth, db } from './firebase/authentication'
+import { loremTasks } from './sampleData'
+
 import './App.css'
 import './themes/nord.css'
 
+let uid
+
 function App() {
-  const [data, setData] = useState({
-    tasks: [
-      {
-        text: "Buy Milk",
-        active: true,
-      },
-      {
-        text: "Wash Clothes",
-        active: false,
-      },
-      {
-        text: "Drink Water",
-        active: true,
-      },
-    ],
-    removed: [
-      "Feed Kittens",
-      "Piano lessons",
-    ],
-  })
+  const [data, setData] = useState(loremTasks)
+  const [loading, setLoading] = useState(true)
+  const [msg, setMsg] = useState("Loading your tasks...")
+
+  useEffect(() => {
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        uid = user.uid
+        const docSnap = await getDoc(doc(db, 'todos', uid))
+
+        if (docSnap.exists()) {
+          setData(docSnap.data())
+        } else {
+          setDoc(doc(db, 'todos', uid), loremTasks)
+        }
+        setLoading(false)
+      } else {
+        setMsg("Server connection failed.")
+      }
+    })
+  }, [])
+
 
   const actions = {
     // string
@@ -41,6 +50,7 @@ function App() {
         active: true,
       })
       setData(newData)
+      setDoc(doc(db, 'todos', uid), newData)
     },
     // integer
     toggleTaskStatus: function (index) {
@@ -50,6 +60,7 @@ function App() {
       }
       newData.tasks[index].active = !(newData.tasks[index].active)
       setData(newData)
+      setDoc(doc(db, 'todos', uid), newData)
     },
     removeAllCompletedTasks: function () {
       let newData = {
@@ -63,19 +74,30 @@ function App() {
           newData.removed.push(task.text)
       })
       setData(newData)
+      setDoc(doc(db, 'todos', uid), newData)
+    },
+    resetData: function () {
+      setData(loremTasks)
+      setDoc(doc(db, 'todos', uid), loremTasks)
     }
   }
 
   return (
-    <div className="App">
-      <div className="left">
-        <TaskInput addTask={actions.addTask} />
-        <List tasks={data.tasks} toggleTaskStatus={actions.toggleTaskStatus} />
-      </div>
-      <div className="right">
-        <button onClick={actions.removeAllCompletedTasks}>Remove Completed Tasks</button>
-        <Removed removed={data.removed} />
-      </div>
+    <div>
+      {loading && msg}
+      {!loading &&
+        <div className="App">
+          <div className="left">
+            <TaskInput addTask={actions.addTask} />
+            <List tasks={data.tasks} toggleTaskStatus={actions.toggleTaskStatus} />
+          </div>
+          <div className="right">
+            <button onClick={actions.removeAllCompletedTasks}>Remove Completed Tasks</button>
+            <button onClick={actions.resetData}>Reset User Data</button>
+            <Removed removed={data.removed} />
+          </div>
+        </div>
+      }
     </div>
   );
 }
