@@ -26,13 +26,11 @@ body {
 }
 
 .left, .right {
-  border-radius: 5px;
   padding: 5px;
   margin: 20px 5px;
   align-items: center;
   min-width: 30vw;
   text-overflow: wrap;
-  padding: auto;
 }
 
 input {
@@ -41,11 +39,9 @@ input {
   color: var(--nord0);
   border: none;
   border-bottom: var(--nord0) solid 3px;
-  /* border-radius: 4px; */
 }
 
 input:focus {
-  /* border: var(--nord3) solid 3px; */
   outline: none;
 }
 
@@ -86,9 +82,13 @@ ul {
 }
 
 .add-task {
-  border: none;
-  background-color: var(--nord7);
-  color: var(--nord0);
+  background-color: var(--nord10);
+  border: solid var(--nord0) 2px;
+  color: var(--nord4);
   font-size: calc(8px + 1.5vmin);
   margin-left: 5px;
+}
+
+.add-task:hover {
+  outline: solid var(--nord0) 2px;
 }

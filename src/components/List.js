@@ -19,9 +19,7 @@ export default function List({ tasks, toggleTaskStatus }) {
 		<div>
 			<h2>Tasks</h2>
 			<ul>
-				{
-					listItems
-				}
+				{listItems}
 			</ul>
 		</div>
 	)

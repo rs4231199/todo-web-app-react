@@ -1,16 +1,34 @@
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 export default function TaskInput({ addTask }) {
-	const [error, setError] = useState(false);
+	const [value, setValue] = useState('')
+	const [error, setError] = useState(false)
+	const inputRef = useRef(null)
+
+	useEffect(() => {
+		inputRef.current.focus()
+	}, [])
 
 	const handleInput = () => {
-		const input = document.querySelector('.input-field');
-		if (input.value.length < 5) {
+		if (value.length < 5) {
 			setError(true)
 			return;
 		}
-		addTask(input.value)
-		input.value = ""
+		addTask(value)
+		setValue('')
+	}
+
+	const handleKeyPress = (event) => {
+		if (event.key === 'Enter' || event.key === 13) {
+			handleInput()
+		}
+	}
+
+	const handleChange = ({ target }) => {
+		setValue(target.value)
+		if (error && target.value.length >= 5) {
+			setError(false)
+		}
 	}
 
 	return (
@@ -18,19 +36,13 @@ export default function TaskInput({ addTask }) {
 			<input
 				type="text"
 				className="input-field"
-				onKeyPress={(event) => {
-					if (event.key === 'Enter' || event.key === 13) {
-						handleInput()
-					}
-				}}
-				onChange={({ target }) => {
-					if (error && target.value.length >= 5) {
-						setError(false)
-					}
-				}}
+				ref={inputRef}
+				value={value}
+				onKeyPress={handleKeyPress}
+				onChange={handleChange}
 			/>
-			<button onClick={handleInput} className="add-task"> Add task</button>
-			{error && <p className="error">A task can't be created with less than five characters</p>}
+			<button onClick={handleInput} className="add-task">Add task</button>
+			{error && <p className="error">A new task can't be created with less than five characters</p>}
 		</div>
 	)
 }
