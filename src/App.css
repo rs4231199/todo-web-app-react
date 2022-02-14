@@ -47,11 +47,13 @@ input:focus {
 
 .task {
   cursor: pointer;
+  list-style-type: "\2610";
 }
 
 .task-completed {
   text-decoration: line-through;
   color: var(--nord11);
+  list-style-type: "\2611";
 }
 
 button {

@@ -2,9 +2,9 @@ export default function List({ tasks, toggleTaskStatus }) {
 	const listItems = tasks.map((task, index) => {
 		return (
 			<li
-				key={index}
+				key={task.id}
 				className={
-					`task ${!task.active && 'task-completed'}`
+					`task${task.active ? '' : ' task-completed'}`
 				}
 				onClick={
 					() => toggleTaskStatus(index)

@@ -13,9 +13,10 @@ import './App.css'
 import './themes/nord.css'
 
 let uid
+let lastId = loremTasks.tasks.at(-1).id
 
 function App() {
-  const [data, setData] = useState(loremTasks)
+  const [data, setData] = useState(JSON.parse(JSON.stringify(loremTasks)))
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -25,7 +26,9 @@ function App() {
         const docSnap = await getDoc(doc(db, 'todos', uid))
 
         if (docSnap.exists()) {
-          setData(docSnap.data())
+          const newData = docSnap.data()
+          lastId = newData.tasks.at(-1).id
+          setData(newData)
         } else {
           setDoc(doc(db, 'todos', uid), loremTasks)
         }
@@ -45,9 +48,10 @@ function App() {
       newData.tasks.push({
         text,
         active: true,
+        id: ++lastId,
       })
-      setData(newData)
       setDoc(doc(db, 'todos', uid), newData)
+      setData(newData)
     },
     // integer
     toggleTaskStatus: function (index) {
@@ -56,8 +60,8 @@ function App() {
         removed: [...data.removed],
       }
       newData.tasks[index].active = !(newData.tasks[index].active)
-      setData(newData)
       setDoc(doc(db, 'todos', uid), newData)
+      setData(newData)
     },
     removeAllCompletedTasks: function () {
       let newData = {
@@ -70,12 +74,13 @@ function App() {
         else
           newData.removed.push(task.text)
       })
-      setData(newData)
       setDoc(doc(db, 'todos', uid), newData)
+      setData(newData)
     },
     resetData: function () {
-      setData(loremTasks)
       setDoc(doc(db, 'todos', uid), loremTasks)
+      lastId = loremTasks.tasks.at(-1).id
+      setData(JSON.parse(JSON.stringify(loremTasks)))
     }
   }
 
